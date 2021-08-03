@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        @font-face {
+            font-family: "zorque.otf";
+            src: url("./zorque.otf");
+        }
         *,
         *::after,
         *::before {
@@ -14,12 +18,107 @@
         }
         body {
             overflow: hidden;
+            background-color: black;
+            
+        }
+        .score-board  {
+            position: fixed;
+            margin: 1rem 2rem;
+            pointer-events: none;
+            font-family: 'Courier New', Courier, monospace;
+            -moz-user-select: none; 
+            -webkit-user-select: none;
+             -ms-user-select:none; 
+             user-select:none;
+             -o-user-select:none;
+        }
+        .score-board span {
+            color: rgba(255, 255, 255,0.6);
+            font-weight: bold;
+            font-family: "zorque.otf";
+        }
+        .parent-div {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .white-bg {
+            width: 30rem;
+            height: 15rem;
+            max-width: 30rem;
+            background-color: #fff;
+            max-height: 15rem;
+            min-width: 15rem;
+            min-height: 6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            font-family: "zorque.otf";
+            -moz-user-select: none; 
+            -webkit-user-select: none;
+             -ms-user-select:none; 
+             user-select:none;
+             -o-user-select:none;
+        }
+
+        .white-bg h1 {
+            /* margin-bottom: 0.5rem; */
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        .white-bg small {
+            font-weight: bold;
+            opacity: 0.6;
+            margin-top: -0.4rem;
+        }
+
+        .white-bg div {
+            height: 40%;
+            width: 100%;
+            display: grid;
+            place-items: center;
+        }
+
+        .white-bg button {
+            width: 80%;
+            height: 60%;
+            font-family: "zorque.otf";
+            border-radius: 10px;
+            background-color: transparent;
+            border: none;
+            background-color: tomato;
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .white-bg button:hover {
+            background-color: rgb(255, 74, 42);
         }
     </style>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js" integrity="sha512-UxP+UhJaGRWuMG2YC6LPWYpFQnsSgnor0VUF3BHdD83PS/pOpN+FYbZmrYN+ISX8jnvgVUciqP/fILOXDjZSwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script defer src="./index.js"></script>
-    <title>JS - game</title>
+    <title>Particle Shasher</title>
 </head>
 <body>
+    <div class="score-board"><span>Score: </span><span id="score">0</span></div>
+    <div class="parent-div">
+        <div class="white-bg">
+            <h1 id="display-score">0</h1>
+            <small>Points</small>
+            <div><button id="start-game">Start Game</button></div>
+        </div>
+    </div>
     <canvas></canvas>
 </body>
 </html>
