@@ -29,6 +29,9 @@ const displayFinalScore = document.getElementById("display-score")
 // if we create an id to a html element so we can use it as a variable in javascript
 canvas.width = innerWidth
 canvas.height = innerHeight
+let rateOfSpawn = 100
+let spawnTime = 2500;
+let clearIntervalId = null
 
 class Player {
     constructor(x, y, radius, color) {
@@ -123,34 +126,36 @@ function resetGame() {
     enemies = []
     particle = []
     ctx.fillStyle = "#000"
-    ctx.fillRect(0,0,canvas.width,canvas.height)
-    
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    rateOfSpawn = 10
+    spawnTime = 2000;
+    clearIntervalId = null
 }
 
 
 function spawnEnemies() {
-    setInterval(() => {
-        // randomize enemy shapes
-        const radius = Math.random() * (30 - 6) + 6
-        let x
-        let y;
-        // this condition is for create enemys on every direction on screen
-        if (Math.random() < 0.5) {
-            x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius
-            y = Math.random() * canvas.height
-        }
-        else {
-            x = Math.random() * canvas.width
-            y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius
-        }
-        const color = `hsl(${Math.floor(Math.random() * 360)},50%,50%)`;
-        const angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x)
-        const velocity = {
-            x: Math.cos(angle),
-            y: Math.sin(angle)
-        }
-        enemies.push(new Enemy(x, y, radius, color, velocity))
-    }, 1000);
+    // randomize enemy shapes
+    const radius = Math.random() * (30 - 6) + 6
+    let x
+    let y;
+    // this condition is for create enemys on every direction on screen
+    if (Math.random() < 0.5) {
+        x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius
+        y = Math.random() * canvas.height
+    }
+    else {
+        x = Math.random() * canvas.width
+        y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius
+    }
+    const color = `hsl(${Math.floor(Math.random() * 360)},50%,50%)`;
+    const angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x)
+    const velocity = {
+        x: Math.cos(angle),
+        y: Math.sin(angle)
+    }
+    enemies.push(new Enemy(x, y, radius, color, velocity))
+    clearInterval(clearIntervalId)
+    clearIntervalId = setInterval(spawnEnemies, spawnTime);
 
 }
 
@@ -190,6 +195,7 @@ function animate() {
         const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y)
         // if this true then we end the game
         if (dist - enemy.radius - (player.radius - 2) < 1) {
+            clearInterval(clearIntervalId)
             displayFinalScore.innerHTML = score
             button.innerHTML = "Restart Game"
             model.style.display = "flex"
@@ -208,6 +214,10 @@ function animate() {
                         y: (Math.random() - 0.5) * (Math.random() * 6)
                     }))
                 }
+                if (spawnTime > 1000) {
+                    spawnTime -= rateOfSpawn;
+                }
+
                 // here we are just reduce the size of enemy when they got a hit and transition them
                 if (enemy.radius - 10 > 10) {
                     score += 10
